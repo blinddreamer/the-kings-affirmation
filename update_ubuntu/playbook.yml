@@ -1,0 +1,20 @@
+- hosts: ubuntu
+  become: yes
+  become_user: "{{ remote_user }}"
+  vars_files:
+  - vars.yml
+  tasks:
+  - name: PLS UPDATE THIS BRO
+    apt:
+      update_cache: yes
+      upgrade: 'yes'
+    register: apt_update_status
+
+  - name: DELETE OLD SHIT
+    apt:
+      autoremove: yes
+
+  - name: REBOOT.me
+    reboot:
+      post_reboot_delay: 60
+    when: apt_update_status.changed
