@@ -1,10 +1,9 @@
 - hosts: ubuntu
   remote_user: "{{ noob_user }}"
+  ansible_password : "{noob_password}"
   become: yes
   become_user: "{{ voltron }}"
   become_pass: "{{ voltron_pwd }}"
-  vars_files:
-  - vars.yml
   tasks:
   - name: PLS UPDATE THIS BRO
     apt:
