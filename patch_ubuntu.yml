@@ -1,5 +1,5 @@
 - hosts: ubuntu
-  ansible_user: "{{ a_user }}"
+  remote_user: "{{ a_user }}"
   ansible_password: "{{ a_password }}"
   become: yes
   become_user: "{{ voltron }}"
