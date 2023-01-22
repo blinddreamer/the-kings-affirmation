@@ -1,9 +1,5 @@
 - hosts: ubuntu
-  remote_user: "{{ a_user }}"
-  ansible_ssh_pass: "{{ a_password }}"
   become: yes
-  become_user: "{{ voltron }}"
-  become_pass: "{{ voltron_pwd }}"
   tasks:
   - name: PLS UPDATE THIS BRO
     apt:
