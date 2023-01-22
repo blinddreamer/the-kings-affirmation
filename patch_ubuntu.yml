@@ -1,6 +1,5 @@
 - hosts: ubuntu
   remote_user: "{{ noob_user }}"
-  remote_pass: "{{ noob_password }}"
   become: yes
   become_user: "{{ voltron }}"
   become_pass: "{{ voltron_pwd }}"
