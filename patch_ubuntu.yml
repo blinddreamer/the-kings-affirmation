@@ -1,7 +1,9 @@
 - hosts: ubuntu
-  remote_user: "{{ user }}"
+  remote_user: "{{ noob_user }}"
+  remote_pass: "{{ noob_password }}"
   become: yes
-  become_user: "{{ remote_user }}"
+  become_user: "{{ voltron }}"
+  become_pass: "{{ voltron_pwd }}"
   vars_files:
   - vars.yml
   tasks:
