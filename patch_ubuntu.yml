@@ -1,6 +1,6 @@
 - hosts: ubuntu
   remote_user: "{{ noob_user }}"
-  ansible_password : "{noob_password}"
+  ansible_password : "{{ noob_password }}"
   become: yes
   become_user: "{{ voltron }}"
   become_pass: "{{ voltron_pwd }}"
