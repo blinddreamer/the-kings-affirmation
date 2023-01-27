@@ -1,2 +1,2 @@
 # the-kings-affirmation
-broken discord bot t
+broken discord bot
