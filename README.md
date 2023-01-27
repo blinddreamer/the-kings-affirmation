@@ -9,5 +9,3 @@ The script also has event listeners for errors, warnings, and when the bot is re
 This script is used to create a Discord bot that allows users to assign themselves roles by reacting to a message with a specific reaction.
 It also set bot's status as watching Trigun Stampede when it is online.
 It also handle the events of bot shutdown by destroying the manager and client object.
-
-by chatgpt
