@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "author": "BlindDreamer",
     "discord.js": "^14.7.1",
     "discordjs-reaction-role": "^3.1.0"
   }
