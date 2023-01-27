@@ -1,15 +1,16 @@
-const { Client, GatewayIntentBits } = require('discord.js');
+const { Client, GatewayIntentBits, Partials } = require('discord.js');
 const { ActivityType } = require('discord.js');
 const { ReactionRole } = require("discordjs-reaction-role");
 
 const client = new Client({
+    partials: [Partials.Message, Partials.Reaction],
 	intents: [
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildMessages,
-		GatewayIntentBits.MessageContent,
-		GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildMessageReactions,
-        GatewayIntentBits.GuildModeration,
+		GatewayIntentBits.MessageContent,
+		//GatewayIntentBits.GuildMembers,
+        //GatewayIntentBits.GuildModeration,
 	],
 });
 
@@ -29,17 +30,37 @@ client.on('ready', () => {
       })
 });
 
+const config = [
+    {
+      messageId: "818172637393190933",  //plex
+      roleId: "759091494215745557",
+      reaction: "759103156285472818",
+    },
+    {
+      messageId: "820675271949680710",  //sot
+      roleId: "627688811966758922",
+      reaction: "759103156218757162",
+    },
+    {
+      messageId: "820677513205383168", //sc
+      roleId: "759093067772067890",
+      reaction: "759103161276432384",
+    },
+  ];
+
+const manager = new ReactionRole(client, config); 
+
+const destroy = () => {
+    manager.teardown();
+    client.destroy();
+  };
+  process.on("SIGINT", destroy);
+  process.on("SIGTERM", destroy);
+  
+
 client.on('ready', () => {
     const channel = client.channels.cache.get('490478387991805973');
-    channel.send('back to serve...');
-    console.log('setting status');
-
-    const rr = new ReactionRole(client, [
-        { messageId: "818172637393190933", reaction: "759103156285472818", roleId: "759091494215745557" },
-        { messageId: "1068510749594493069", reaction: ":759103156285472818", roleId: "759091494215745557" }, 
-      ]);
+    channel.send('back online');
 });
-
-// reactionRole.remove('818172637393190933', ':au16:', 'plex'); 
 
 client.login(process.env.DISCORD_TOKEN);
