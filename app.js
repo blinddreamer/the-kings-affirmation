@@ -65,8 +65,9 @@ const destroy = () => {
     manager.teardown();
     client.destroy();
   };
-  process.on("SIGINT", destroy);
-  process.on("SIGTERM", destroy);
+
+process.on("SIGINT", destroy);
+process.on("SIGTERM", destroy);
   
 
 client.login(process.env.DISCORD_TOKEN);
