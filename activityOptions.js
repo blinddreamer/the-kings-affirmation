@@ -1,3 +1,5 @@
+//activityOptions.js
+
 const { ActivityType } = require('discord.js');
 
 const activityOptions = [
