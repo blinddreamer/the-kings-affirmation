@@ -1,6 +1,5 @@
 const { ActivityType } = require('discord.js');
 
-
 const activityOptions = [
   { name: 'SaltEMike Reacts', type: ActivityType.Watching },
   { name: 'reddit', type: ActivityType.Watching },
@@ -15,16 +14,7 @@ const activityOptions = [
   { name: 'Dimension - if You Want To - Remix', type: ActivityType.Listening },
 ];
 
-
-client.on('ready', () => {
-  // Set initial random status
-  setRandomActivity();
-
-  // Update status every 6 hours
-  setInterval(setRandomActivity, 6 * 60 * 60 * 1000);
-});
-
-function setRandomActivity() {
+function setRandomActivity(client) {
   const randomIndex = Math.floor(Math.random() * activityOptions.length);
   const activity = activityOptions[randomIndex];
   client.user.setPresence({
@@ -32,3 +22,7 @@ function setRandomActivity() {
     status: 'online',
   });
 }
+
+module.exports = {
+  setRandomActivity,
+};
