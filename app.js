@@ -1,6 +1,7 @@
 const { Client, GatewayIntentBits, Partials } = require('discord.js');
 const { setupRoles } = require('./roles');
-const activityOptions = require('./activityOptions');
+const setupReady = require('./activityOptions');
+
 
 const client = new Client({
   partials: [Partials.Message, Partials.Reaction],
@@ -20,24 +21,10 @@ client.on('warn', (warning) => {
     console.warn(warning);
 });
 
-client.on('ready', () => {
-  // Set initial random status
-  setRandomActivity();
-
-  // Update status every 6 hours
-  setInterval(setRandomActivity, 6 * 60 * 60 * 1000);
-});
-
-function setRandomActivity() {
-  const randomIndex = Math.floor(Math.random() * activityOptions.length);
-  const activity = activityOptions[randomIndex];
-  client.user.setPresence({
-    activities: [activity],
-    status: 'online',
-  });
-}
-
 // Call the setupRoles function and pass the client object as a parameter
 setupRoles(client);
+
+// Call the exported function from the acivityOptions.js file
+setupReady(client);
 
 client.login(process.env.DISCORD_TOKEN)
