@@ -43,6 +43,7 @@ client.on('ready', () => {
 
   // Call the setupRoles function and pass the client object as a parameter
   setupRoles(client);
+
 });
 
 client.login(process.env.DISCORD_TOKEN);
