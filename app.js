@@ -2,7 +2,7 @@
 
 const { Client, GatewayIntentBits, Partials } = require('discord.js');
 const { setupRoles } = require('./roles');
-const { setRandomActivity } = require('./activityOptions');
+const { setRandomActivity, activityOptions } = require('./activityOptions');
 
 const client = new Client({
   partials: [Partials.Message, Partials.Reaction],
