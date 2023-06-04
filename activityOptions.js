@@ -27,4 +27,5 @@ function setRandomActivity(client) {
 
 module.exports = {
   setRandomActivity,
+  activityOptions,
 };
