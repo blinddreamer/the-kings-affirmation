@@ -9,7 +9,7 @@ const activityOptions = [
   { name: 'NIGHTRIDE', type: ActivityType.Watching },
   { name: 'Trigun Stampede', type: ActivityType.Watching },
   { name: 'BattleBots', type: ActivityType.Watching },
-  { name: 'GTA5rp', type: ActivityType.Watching },
+  { name: 'BattleBit', type: ActivityType.Playing },
   { name: 'Cowboy Bebop OS', type: ActivityType.Listening },
   { name: 'Cosculluela, O`Neill - Legendario', type: ActivityType.Listening },
   { name: 'YASS - En La Isla ', type: ActivityType.Listening },
