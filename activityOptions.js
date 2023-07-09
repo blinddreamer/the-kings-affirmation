@@ -3,7 +3,6 @@
 const { ActivityType } = require('discord.js');
 
 const activityOptions = [
-  { name: 'SaltEMike Reacts', type: ActivityType.Watching },
   { name: 'MANDO!', type: ActivityType.Watching },
   { name: 'Once in a Six Side', type: ActivityType.Watching },
   { name: 'NIGHTRIDE', type: ActivityType.Watching },
