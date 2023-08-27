@@ -1,5 +1,6 @@
+//smart.js
+
 const axios = require("axios");
-const { Client, GatewayIntentBits, Partials } = require("discord.js");
 
 async function answerQuestion(question) {
   try {
