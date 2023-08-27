@@ -1,22 +1,20 @@
 // smart.js
-const axios = require("axios");
+const OpenAI = require("openai-api");
 
-async function answerQuestion(mentionedContent) {
+const OPENAI_API_KEY = process.env.SMART_KEY;
+
+const openai = new OpenAI({ key: OPENAI_API_KEY });
+
+async function answerQuestion(question) {
   try {
-    const response = await axios.post(
-      "https://api.openai.com/v1/chat/completions",
-      {
-        prompt: mentionedContent,
-        max_tokens: 250,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.SMART_KEY}`,
-        },
-      }
-    );
+    const gptResponse = await openai.complete({
+      engine: "davinci",
+      prompt: question,
+      maxTokens: 250,
+      // Additional parameters can be added here as needed
+    });
 
-    return response.data.choices[0].text;
+    return gptResponse.choices[0].text;
   } catch (error) {
     console.error("Error fetching response from OpenAI:", error.message);
     throw error;
