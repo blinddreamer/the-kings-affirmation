@@ -51,16 +51,14 @@ client.on("messageCreate", async (message) => {
   console.log("Message received:", message.content);
   if (message.author.bot) return;
 
-  const messageContentWithoutMentions = message.content
-    .replace(/<@!\d+>/g, "")
-    .trim();
+  const mentionedContent = message.content.replace(/<@!\d+>/g, "").trim();
 
-  if (messageContentWithoutMentions) {
+  if (mentionedContent) {
     try {
-      const answer = await answerQuestion(messageContentWithoutMentions);
+      const answer = await answerQuestion(mentionedContent);
       message.reply(answer);
       console.log(
-        `Replied to message by ${message.author.tag}: "${messageContentWithoutMentions}"`
+        `Replied to message by ${message.author.tag}: "${mentionedContent}"`
       );
     } catch (error) {
       console.error("Error fetching answer:", error);
