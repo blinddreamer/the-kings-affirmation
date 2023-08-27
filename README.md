@@ -1,11 +1,55 @@
-# the-kings-affirmation
+# The King's Affirmation Discord Bot
 
-This is a Node.js script that utilizes the Discord.js library to create a Discord bot. The script uses the Client and Partials classes from the Discord.js library to create a new Discord client, and sets the partials property to include message and reaction partials. The intents property is also set to include specific gateway intents for guilds, guild messages, guild message reactions, and message content.
+## Overview
 
-The script also imports the ActivityType class from the Discord.js library and uses it to set the bot's presence when it's ready. The ReactionRole class from the discordjs-reaction-role package is also imported and used to create a new reaction role manager with a specified configuration.
+The King's Affirmation is a Discord bot created using Node.js and the Discord.js library. This bot provides various functionalities, including reaction-based role assignment, intelligent chat responses, and dynamic activity updates.
 
-The script also has event listeners for errors, warnings, and when the bot is ready. When the bot is ready, it sends a message to a specific channel. The script uses the login() method to log the bot in using a token stored in an environment variable.
+## Features
 
-This script is used to create a Discord bot that allows users to assign themselves roles by reacting to a message with a specific reaction.
-It also set bot's status as watching Trigun Stampede when it is online.
-It also handle the events of bot shutdown by destroying the manager and client object.
+- **Reaction Role Assignment:** Users can assign themselves roles by reacting to specific messages with designated reactions.
+
+- **Intelligent Chat Responses:** The bot utilizes the power of OpenAI's GPT-3.5 Turbo model to provide intelligent responses to user messages.
+
+- **Dynamic Activity Updates:** The bot's activity status is continuously updated with various options, including watching different shows and listening to music.
+
+## Usage
+
+1. Clone this repository to your local machine.
+2. Install the required Node.js packages by running `npm install`.
+3. Configure the bot by setting environment variables:
+
+   - `DISCORD_TOKEN`: Your Discord bot token.
+   - `OPENAI_API_KEY`: Your OpenAI API key.
+
+4. Run the bot using `node app.js`.
+
+### Docker Container
+
+You can also run the bot using Docker:
+
+1. **Pull the Docker Image** from the GitHub Container Registry (GHCR):
+
+   docker pull ghcr.io/your-username/the-kings-affirmation:latest
+
+Create a Docker Container with your environment variables set:
+
+docker run -d \
+ -e DISCORD_TOKEN=YOUR_DISCORD_BOT_TOKEN \
+ -e OPENAI_API_KEY=YOUR_OPENAI_API_KEY \
+ ghcr.io/your-username/the-kings-affirmation:latest
+
+Replace YOUR_DISCORD_BOT_TOKEN and YOUR_OPENAI_API_KEY with your actual Discord bot token and OpenAI API key.
+
+This will start the bot in a Docker container with the specified configuration.
+
+Bot Commands
+The bot automatically responds to messages with intelligent answers.
+Users can assign themselves roles by reacting to specific messages.
+The bot's activity is updated periodically with various options.
+License
+This project is licensed under the GNU General Public License v3.0 (GPL-3.0). See the LICENSE file for details.
+
+Acknowledgments
+Discord.js
+OpenAI
+discordjs-reaction-role
