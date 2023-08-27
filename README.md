@@ -61,7 +61,3 @@ This project is licensed under the GNU General Public License v3.0 (GPL-3.0). Se
 - [Discord.js](https://discord.js.org/)
 - [OpenAI](https://openai.com/)
 - [discordjs-reaction-role](https://www.npmjs.com/package/discordjs-reaction-role)
-
-```
-
-```
