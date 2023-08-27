@@ -4,8 +4,8 @@ const {
   setRandomActivity,
   activityOptions,
 } = require("./components/activityOptions");
-const { handleMessage } = require("./smart");
-const { initializeOpenAI } = require("./smart");
+const { handleMessage } = require("./components/smart");
+const { initializeOpenAI } = require("./components/smart");
 
 const client = new Client({
   partials: [Partials.Message, Partials.Reaction],
