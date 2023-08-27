@@ -1,4 +1,3 @@
-````markdown
 # The King's Affirmation Discord Bot
 
 ## Overview
@@ -33,7 +32,6 @@ You can also run the bot using Docker:
    ```bash
    docker pull ghcr.io/your-username/the-kings-affirmation:latest
    ```
-````
 
 2. **Create a Docker Container** with your environment variables set:
 
