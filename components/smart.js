@@ -1,9 +1,7 @@
 const tectalicOpenai = require("@tectalic/openai").default;
 
-// Load your OpenAI API key from an environment variable
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY; // Replace with your environment variable
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
-// Create an OpenAI client
 const openai = tectalicOpenai(OPENAI_API_KEY);
 
 async function answerQuestion(question) {
