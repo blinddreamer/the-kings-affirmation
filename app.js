@@ -55,7 +55,7 @@ client.on("messageCreate", async (message) => {
   if (message.mentions.has(client.user)) {
     // Extract the mentioned content and trim it
     const mentionedContent = message.content
-      .replace(`<@!${client.user.id}>`, "")
+      .replace(`<@!${client.user.id}>`, " ")
       .trim();
 
     if (mentionedContent) {
