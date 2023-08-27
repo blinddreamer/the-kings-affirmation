@@ -1,20 +1,12 @@
-// smart.js
-
 const tectalicOpenai = require("@tectalic/openai").default;
 
-let openaiClient; // Initialize as null
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
-function initializeOpenAI(apiKey) {
-  openaiClient = tectalicOpenai(apiKey);
-}
+const openai = tectalicOpenai(OPENAI_API_KEY);
 
 async function answerQuestion(question) {
-  if (!openaiClient) {
-    throw new Error("OpenAI client is not initialized.");
-  }
-
   try {
-    const gptResponse = await openaiClient.chatCompletions.create({
+    const gptResponse = await openai.chatCompletions.create({
       model: "gpt-3.5-turbo",
       messages: [{ role: "user", content: question }],
     });
@@ -26,7 +18,45 @@ async function answerQuestion(question) {
   }
 }
 
+async function handleMessage(message) {
+  console.log("Message received:", message.content);
+  if (message.author.bot) return;
+
+  if (message.content) {
+    try {
+      const answer = await answerQuestion(message.content);
+
+      if (answer.length <= 2000) {
+        message.reply(answer);
+      } else {
+        sendLongMessage(message.channel, answer);
+      }
+
+      console.log(
+        `Replied to message by ${message.author.tag}: "${message.content}"`
+      );
+    } catch (error) {
+      console.error("Error fetching answer:", error);
+      message.reply("ME NOT THAT SMART.");
+    }
+  }
+}
+
+async function sendLongMessage(channel, longText) {
+  const MAX_MESSAGE_LENGTH = 2000; // Discord's character limit for a single message
+
+  const numChunks = Math.ceil(longText.length / MAX_MESSAGE_LENGTH);
+
+  for (let i = 0; i < numChunks; i++) {
+    const start = i * MAX_MESSAGE_LENGTH;
+    const end = start + MAX_MESSAGE_LENGTH;
+    const chunk = longText.slice(start, end);
+
+    // Send each chunk as a separate message
+    await channel.send(chunk);
+  }
+}
+
 module.exports = {
-  initializeOpenAI,
-  answerQuestion,
+  handleMessage,
 };

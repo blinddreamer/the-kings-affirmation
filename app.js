@@ -5,7 +5,6 @@ const {
   activityOptions,
 } = require("./components/activityOptions");
 const { handleMessage } = require("./components/smart");
-const { initializeOpenAI } = require("./components/smart");
 
 const client = new Client({
   partials: [Partials.Message, Partials.Reaction],
@@ -25,8 +24,6 @@ client.on("error", (error) => {
 client.on("warn", (warning) => {
   console.warn("Bot warning:", warning);
 });
-
-initializeOpenAI(process.env.OPENAI_API_KEY);
 
 setupRoles(client);
 
@@ -49,8 +46,6 @@ client.on("ready", () => {
   }, 6 * 60 * 60 * 1000);
 });
 
-client.on("messageCreate", async (message) => {
-  handleMessage(client, message);
-});
+client.on("messageCreate", handleMessage);
 
 client.login(process.env.DISCORD_TOKEN);
