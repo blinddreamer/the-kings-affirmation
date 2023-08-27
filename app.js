@@ -1,8 +1,8 @@
-//app.js
 require("dotenv").config();
 const { Client, GatewayIntentBits, Partials } = require("discord.js");
 const { setupRoles } = require("./roles");
 const { setRandomActivity, activityOptions } = require("./activityOptions");
+const { answerQuestion } = require("./smart");
 
 const client = new Client({
   partials: [Partials.Message, Partials.Reaction],
@@ -22,7 +22,7 @@ client.on("warn", (warning) => {
   console.warn(warning);
 });
 
-setupRoles(client); // Call the setupRoles function and pass the client object as a parameter
+setupRoles(client);
 
 client.on("ready", () => {
   const randomIndex = Math.floor(Math.random() * activityOptions.length);
@@ -32,28 +32,30 @@ client.on("ready", () => {
     status: "online",
   });
 
-  // Call the setupRoles function and pass the client object as a parameter
   setupRoles(client);
 
-  setRandomActivity(client); // Set initial random status
+  setRandomActivity(client);
   setInterval(() => {
-    // Update status every 6 hours
     setRandomActivity(client);
   }, 6 * 60 * 60 * 1000);
 });
 
-//smart sashe
-const { answerQuestion } = require("./smart.js");
-
 client.on("message", async (message) => {
   if (message.author.bot) return;
 
-  // Check if the bot was mentioned
   if (message.mentions.has(client.user)) {
-    const query = message.content.split(" ").slice(1).join(" ").trim();
+    const question = message.content
+      .replace(`<@!${client.user.id}>`, "")
+      .trim();
 
-    const answer = await answerQuestion(query);
-    message.channel.send(answer);
+    if (question) {
+      try {
+        const answer = await answerQuestion(question);
+        message.reply(answer);
+      } catch (error) {
+        message.reply("ERROR.");
+      }
+    }
   }
 });
 
