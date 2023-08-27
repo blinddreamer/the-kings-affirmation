@@ -51,29 +51,23 @@ client.on("messageCreate", async (message) => {
   console.log("Message received:", message.content);
   if (message.author.bot) return;
 
-  // Check if the message mentions the bot
+  // Check if the bot is mentioned
   if (message.mentions.has(client.user)) {
-    // Remove the mention and trim the message content
-    const messageContent = message.content
+    // Extract the mentioned content and trim it
+    const mentionedContent = message.content
       .replace(`<@!${client.user.id}>`, "")
       .trim();
 
-    // Check if the message content starts with a command
-    if (messageContent.startsWith("/sasheto")) {
-      // Remove the command prefix and trim the command
-      const command = messageContent.slice("/sasheto".length).trim();
-
-      if (command) {
-        try {
-          const answer = await answerQuestion(command);
-          message.reply(answer);
-          console.log(
-            `Replied to message by ${message.author.tag}: "${command}"`
-          );
-        } catch (error) {
-          console.error("Error fetching answer:", error);
-          message.reply("An error occurred while fetching the answer.");
-        }
+    if (mentionedContent) {
+      try {
+        const answer = await answerQuestion(mentionedContent);
+        message.reply(answer);
+        console.log(
+          `Replied to message by ${message.author.tag}: "${mentionedContent}"`
+        );
+      } catch (error) {
+        console.error("Error fetching answer:", error);
+        message.reply("ME NOT THAT SMART.");
       }
     }
   }
