@@ -1,3 +1,4 @@
+````markdown
 # The King's Affirmation Discord Bot
 
 ## Overview
@@ -29,27 +30,40 @@ You can also run the bot using Docker:
 
 1. **Pull the Docker Image** from the GitHub Container Registry (GHCR):
 
+   ```bash
    docker pull ghcr.io/your-username/the-kings-affirmation:latest
+   ```
+````
 
-Create a Docker Container with your environment variables set:
+2. **Create a Docker Container** with your environment variables set:
 
-docker run -d \
- -e DISCORD_TOKEN=YOUR_DISCORD_BOT_TOKEN \
- -e OPENAI_API_KEY=YOUR_OPENAI_API_KEY \
- ghcr.io/your-username/the-kings-affirmation:latest
+   ```bash
+   docker run -d \
+     -e DISCORD_TOKEN=YOUR_DISCORD_BOT_TOKEN \
+     -e OPENAI_API_KEY=YOUR_OPENAI_API_KEY \
+     ghcr.io/your-username/the-kings-affirmation:latest
+   ```
 
-Replace YOUR_DISCORD_BOT_TOKEN and YOUR_OPENAI_API_KEY with your actual Discord bot token and OpenAI API key.
+   Replace `YOUR_DISCORD_BOT_TOKEN` and `YOUR_OPENAI_API_KEY` with your actual Discord bot token and OpenAI API key.
 
 This will start the bot in a Docker container with the specified configuration.
 
-Bot Commands
-The bot automatically responds to messages with intelligent answers.
-Users can assign themselves roles by reacting to specific messages.
-The bot's activity is updated periodically with various options.
-License
-This project is licensed under the GNU General Public License v3.0 (GPL-3.0). See the LICENSE file for details.
+## Bot Commands
 
-Acknowledgments
-Discord.js
-OpenAI
-discordjs-reaction-role
+- The bot automatically responds to messages with intelligent answers.
+- Users can assign themselves roles by reacting to specific messages.
+- The bot's activity is updated periodically with various options.
+
+## License
+
+This project is licensed under the GNU General Public License v3.0 (GPL-3.0). See the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- [Discord.js](https://discord.js.org/)
+- [OpenAI](https://openai.com/)
+- [discordjs-reaction-role](https://www.npmjs.com/package/discordjs-reaction-role)
+
+```
+
+```
