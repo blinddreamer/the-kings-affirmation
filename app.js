@@ -1,10 +1,9 @@
+// app.js
+
 const { Client, GatewayIntentBits, Partials } = require("discord.js");
 const { setupRoles } = require("./components/roles");
-const {
-  setRandomActivity,
-  activityOptions,
-} = require("./components/activityOptions");
 const { handleMessage } = require("./components/smart");
+const { getRandomActivity } = require("./components/activityOptions");
 
 const client = new Client({
   partials: [Partials.Message, Partials.Reaction],
@@ -28,8 +27,7 @@ client.on("warn", (warning) => {
 setupRoles(client);
 
 client.on("ready", () => {
-  const randomIndex = Math.floor(Math.random() * activityOptions.length);
-  const activity = activityOptions[randomIndex];
+  const activity = getRandomActivity();
   client.user.setPresence({
     activities: [activity],
     status: "online",
@@ -40,9 +38,9 @@ client.on("ready", () => {
 
   setupRoles(client);
 
-  setRandomActivity(client);
   setInterval(() => {
-    setRandomActivity(client);
+    const newActivity = getRandomActivity(); // Update activity periodically
+    client.user.setActivity(newActivity);
   }, 6 * 60 * 60 * 1000);
 });
 

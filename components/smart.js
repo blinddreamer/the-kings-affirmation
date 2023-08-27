@@ -1,7 +1,8 @@
+// smart.js
+const { sendLongMessage } = require("./LongMessage");
 const tectalicOpenai = require("@tectalic/openai").default;
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-
 const openai = tectalicOpenai(OPENAI_API_KEY);
 
 async function answerQuestion(question) {
@@ -39,21 +40,6 @@ async function handleMessage(message) {
       console.error("Error fetching answer:", error);
       message.reply("ME NOT THAT SMART.");
     }
-  }
-}
-
-async function sendLongMessage(channel, longText) {
-  const MAX_MESSAGE_LENGTH = 2000; // Discord's character limit for a single message
-
-  const numChunks = Math.ceil(longText.length / MAX_MESSAGE_LENGTH);
-
-  for (let i = 0; i < numChunks; i++) {
-    const start = i * MAX_MESSAGE_LENGTH;
-    const end = start + MAX_MESSAGE_LENGTH;
-    const chunk = longText.slice(start, end);
-
-    // Send each chunk as a separate message
-    await channel.send(chunk);
   }
 }
 
