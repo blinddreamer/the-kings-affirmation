@@ -51,14 +51,13 @@ client.on("messageCreate", async (message) => {
   console.log("Message received:", message.content);
   if (message.author.bot) return;
 
-  const mentionedContent = message.content.replace(/<@!\d+>/g, "").trim();
-
-  if (mentionedContent) {
+  // Check if the message content is not empty
+  if (message.content) {
     try {
-      const answer = await answerQuestion(mentionedContent);
+      const answer = await answerQuestion(message.content); // Pass the message content
       message.reply(answer);
       console.log(
-        `Replied to message by ${message.author.tag}: "${mentionedContent}"`
+        `Replied to message by ${message.author.tag}: "${message.content}"`
       );
     } catch (error) {
       console.error("Error fetching answer:", error);

@@ -1,15 +1,13 @@
-//smart.js
-
+// smart.js
 const axios = require("axios");
 
-async function answerQuestion(question) {
+async function answerQuestion(mentionedContent) {
   try {
     const response = await axios.post(
-      //"https://api.openai.com/v1/engines/davinci-codex/completions",
       "https://api.openai.com/v1/chat/completions",
       {
-        prompt: question,
-        max_tokens: 250, //number of tokens
+        prompt: mentionedContent,
+        max_tokens: 250,
       },
       {
         headers: {
