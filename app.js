@@ -4,7 +4,8 @@ const {
   setRandomActivity,
   activityOptions,
 } = require("./components/activityOptions");
-const { answerQuestion } = require("./components/smart");
+const { handleMessage } = require("./smart");
+const { initializeOpenAI } = require("./smart");
 
 const client = new Client({
   partials: [Partials.Message, Partials.Reaction],
@@ -24,6 +25,8 @@ client.on("error", (error) => {
 client.on("warn", (warning) => {
   console.warn("Bot warning:", warning);
 });
+
+initializeOpenAI(process.env.OPENAI_API_KEY);
 
 setupRoles(client);
 
@@ -47,22 +50,7 @@ client.on("ready", () => {
 });
 
 client.on("messageCreate", async (message) => {
-  console.log("Message received:", message.content);
-  if (message.author.bot) return;
-
-  // Check if the message content is not empty
-  if (message.content) {
-    try {
-      const answer = await answerQuestion(message.content); // Pass the message content
-      message.reply(answer);
-      console.log(
-        `Replied to message by ${message.author.tag}: "${message.content}"`
-      );
-    } catch (error) {
-      console.error("Error fetching answer:", error);
-      message.reply("ME NOT THAT SMART.");
-    }
-  }
+  handleMessage(client, message);
 });
 
 client.login(process.env.DISCORD_TOKEN);

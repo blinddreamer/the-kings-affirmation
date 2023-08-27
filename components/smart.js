@@ -1,12 +1,20 @@
+// smart.js
+
 const tectalicOpenai = require("@tectalic/openai").default;
 
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+let openaiClient; // Initialize as null
 
-const openai = tectalicOpenai(OPENAI_API_KEY);
+function initializeOpenAI(apiKey) {
+  openaiClient = tectalicOpenai(apiKey);
+}
 
 async function answerQuestion(question) {
+  if (!openaiClient) {
+    throw new Error("OpenAI client is not initialized.");
+  }
+
   try {
-    const gptResponse = await openai.chatCompletions.create({
+    const gptResponse = await openaiClient.chatCompletions.create({
       model: "gpt-3.5-turbo",
       messages: [{ role: "user", content: question }],
     });
@@ -19,5 +27,6 @@ async function answerQuestion(question) {
 }
 
 module.exports = {
+  initializeOpenAI,
   answerQuestion,
 };
