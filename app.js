@@ -51,24 +51,20 @@ client.on("messageCreate", async (message) => {
   console.log("Message received:", message.content);
   if (message.author.bot) return;
 
-  // Check if the bot is mentioned
-  if (message.mentions.has(client.user)) {
-    // Extract the mentioned content and trim it
-    const mentionedContent = message.content
-      .replace(`<@!${client.user.id}>`, " ")
-      .trim();
+  const messageContentWithoutMentions = message.content
+    .replace(/<@!\d+>/g, "")
+    .trim();
 
-    if (mentionedContent) {
-      try {
-        const answer = await answerQuestion(mentionedContent);
-        message.reply(answer);
-        console.log(
-          `Replied to message by ${message.author.tag}: "${mentionedContent}"`
-        );
-      } catch (error) {
-        console.error("Error fetching answer:", error);
-        message.reply("ME NOT THAT SMART.");
-      }
+  if (messageContentWithoutMentions) {
+    try {
+      const answer = await answerQuestion(messageContentWithoutMentions);
+      message.reply(answer);
+      console.log(
+        `Replied to message by ${message.author.tag}: "${messageContentWithoutMentions}"`
+      );
+    } catch (error) {
+      console.error("Error fetching answer:", error);
+      message.reply("ME NOT THAT SMART.");
     }
   }
 });
