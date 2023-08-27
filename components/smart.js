@@ -9,7 +9,7 @@ const openai = tectalicOpenai(OPENAI_API_KEY);
 async function answerQuestion(question) {
   try {
     const gptResponse = await openai.chatCompletions.create({
-      model: "gpt-4", // Choose the model you want to use, e.g., 'gpt-4'
+      model: "text-davinci-003",
       messages: [{ role: "user", content: question }],
     });
 
