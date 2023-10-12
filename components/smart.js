@@ -19,9 +19,12 @@ async function answerQuestion(question) {
   }
 }
 
-// Create an async function to handle messages
-async function handleMessages(message) {
-  if (message.mentions.has(client.user)) {
+async function handleMessage(message, botUser) {
+  console.log("Message received:", message.content);
+  if (message.content.match(/^<@!?${client.user.id}>( |)$/)) return;
+
+  // Check if the bot is mentioned
+  if (message.mentions.has(420283965480632331)) {
     try {
       const answer = await answerQuestion(message.content);
 
@@ -41,5 +44,6 @@ async function handleMessages(message) {
   }
 }
 
-// Attach the event listener to the client
-client.on('message', handleMessages);
+module.exports = {
+  handleMessage,
+};
