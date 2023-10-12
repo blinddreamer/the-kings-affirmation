@@ -1,7 +1,6 @@
-// smart.js
 const { sendLongMessage } = require("./LongMessage");
 const tectalicOpenai = require("@tectalic/openai").default;
-const { Client } = require("discord.js"); // Import the Discord Client
+const { Client } = require("discord.js");
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const openai = tectalicOpenai(OPENAI_API_KEY);
@@ -23,8 +22,8 @@ async function answerQuestion(question) {
 async function handleMessage(message, client) {
   console.log("Message received:", message.content);
 
-  // Check if the message mentions the bot
-  if (message.content.match(new RegExp(`^<@!?${client.user.id}>( |)$`))) {
+  if (message.mentions.has(client.user)) {
+    // Check if the message mentions the bot
     try {
       const answer = await answerQuestion(message.content);
 
