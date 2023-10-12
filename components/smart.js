@@ -1,10 +1,9 @@
 // smart.js
 const { sendLongMessage } = require("./LongMessage");
-const { ChatCompletionCreateParams, ChatCompletion } = require("openai"); // Import required OpenAI modules
-const { Client } = require("discord.js");
+const { ChatCompletionCreateParams, ChatCompletion } = require("openai");
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+const openai = new ChatCompletion({ apiKey: OPENAI_API_KEY });
 
 async function answerQuestion(question) {
   try {
@@ -13,7 +12,7 @@ async function answerQuestion(question) {
       model: "gpt-3.5-turbo",
     };
 
-    const gptResponse = await openai.chat.completions.create(params);
+    const gptResponse = await openai.create(params); // Updated method name
 
     return (
       gptResponse.choices[0]?.message?.content.trim() ||
