@@ -1,4 +1,4 @@
-//smart.js
+// smart.js
 const { sendLongMessage } = require("./LongMessage");
 const tectalicOpenai = require("@tectalic/openai").default;
 const { Client } = require("discord.js");
@@ -11,6 +11,7 @@ async function answerQuestion(question) {
     const gptResponse = await openai.chatCompletions.create({
       model: "gpt-3.5-turbo",
       messages: [{ role: "user", content: question }],
+      timeout: 15000, // Set a longer timeout (e.g., 15 seconds)
     });
 
     return gptResponse.data.choices[0].message.content.trim();
