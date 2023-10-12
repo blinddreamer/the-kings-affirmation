@@ -1,6 +1,7 @@
 // smart.js
 const { sendLongMessage } = require("./LongMessage");
 const tectalicOpenai = require("@tectalic/openai").default;
+const { Client } = require("discord.js"); // Import the Discord Client
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const openai = tectalicOpenai(OPENAI_API_KEY);
@@ -19,15 +20,11 @@ async function answerQuestion(question) {
   }
 }
 
-client.on("ready", () => {
-  console.log(`Logged in as ${client.user.tag}`);
-});
-
-client.on("message", async (message) => {
-  if (message.author.bot) return; // Ignore messages from bots
+async function handleMessage(message, client) {
+  console.log("Message received:", message.content);
 
   // Check if the message mentions the bot
-  if (message.content.match(new RegExp(`^<@!?${client.user.id}>( |)$`))) {
+  if (message.content.match(new RegExp(`^<@!?${client.user.id}>( |)$`)) {
     try {
       const answer = await answerQuestion(message.content);
 
@@ -37,12 +34,14 @@ client.on("message", async (message) => {
         sendLongMessage(message.channel, answer);
       }
 
-      console.log(
-        `Replied to message by ${message.author.tag}: "${message.content}"`
-      );
+      console.log(`Replied to message by ${message.author.tag}: "${message.content}"`);
     } catch (error) {
       console.error("Error fetching answer:", error);
       message.reply("ME NOT THAT SMART.");
     }
   }
-});
+}
+
+module.exports = {
+  handleMessage,
+};
