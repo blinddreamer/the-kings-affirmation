@@ -19,12 +19,10 @@ async function answerQuestion(question) {
   }
 }
 
-async function handleMessage(message, botUser) {
-  console.log("Message received:", message.content);
-  if (message.content.match(/^<@!?${client.user.id}>( |)$/)) return;
-
-  // Check if the bot is mentioned
-  if (message.mentions.has(420283965480632331)) {
+async function handleMessage(message) {
+  // Check if the message mentions the bot
+  if (message.content.match(/^<@!?${client.user.id}>( |)$/)) {
+    console.log("Message received:", message.content);
     try {
       const answer = await answerQuestion(message.content);
 
