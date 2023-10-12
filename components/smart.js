@@ -8,14 +8,12 @@ const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
 
 async function answerQuestion(question) {
   try {
-    const params: ChatCompletionCreateParams = {
+    const params = {
       messages: [{ role: "user", content: question }],
       model: "gpt-3.5-turbo",
     };
 
-    const gptResponse: ChatCompletion = await openai.chat.completions.create(
-      params
-    );
+    const gptResponse = await openai.chat.completions.create(params);
 
     return (
       gptResponse.choices[0]?.message?.content.trim() ||
@@ -42,10 +40,10 @@ async function handleMessage(message, client) {
       }
 
       console.log(
-        `Replied to message by ${message.author.tag}: "${message.content}"`
+        `Replied to the message by ${message.author.tag}: "${message.content}"`
       );
     } catch (error) {
-      console.error("Error fetching answer:", error);
+      console.error("Error fetching an answer:", error);
       message.reply("ME NOT THAT SMART.");
     }
   }
