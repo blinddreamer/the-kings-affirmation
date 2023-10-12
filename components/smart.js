@@ -19,12 +19,8 @@ async function answerQuestion(question) {
   }
 }
 
-async function handleMessage(message, botUser) {
-  console.log("Message received:", message.content);
-  if (message.author.bot) return;
-
-  // Check if the bot is mentioned
-  if (message.mentions.has(420283965480632331)) {
+client.on('message', message => {
+  if (message.mentions.has(client.user)) {
     try {
       const answer = await answerQuestion(message.content);
 
@@ -42,8 +38,4 @@ async function handleMessage(message, botUser) {
       message.reply("ME NOT THAT SMART.");
     }
   }
-}
-
-module.exports = {
-  handleMessage,
-};
+});
