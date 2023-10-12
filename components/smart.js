@@ -23,7 +23,9 @@ async function handleMessage(message) {
   console.log("Message received:", message.content);
   if (message.author.bot) return;
 
-  if (message.content) {
+  // Check if the message mentions the bot
+  if (message.content.includes("@botname")) {
+    // Replace "@botname" with your bot's mention
     try {
       const answer = await answerQuestion(message.content);
 
