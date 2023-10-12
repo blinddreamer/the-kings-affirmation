@@ -24,7 +24,7 @@ async function handleMessage(message, client) {
   console.log("Message received:", message.content);
 
   // Check if the message mentions the bot
-  if (message.content.match(new RegExp(`^<@!?${client.user.id}>( |)$`)) {
+  if (message.content.match(new RegExp(`^<@!?${client.user.id}>( |)$`))) {
     try {
       const answer = await answerQuestion(message.content);
 
@@ -34,7 +34,9 @@ async function handleMessage(message, client) {
         sendLongMessage(message.channel, answer);
       }
 
-      console.log(`Replied to message by ${message.author.tag}: "${message.content}"`);
+      console.log(
+        `Replied to message by ${message.author.tag}: "${message.content}"`
+      );
     } catch (error) {
       console.error("Error fetching answer:", error);
       message.reply("ME NOT THAT SMART.");
