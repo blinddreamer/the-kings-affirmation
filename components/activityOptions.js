@@ -5,7 +5,7 @@ const { ActivityType } = require("discord.js");
 const activityOptions = [
   { name: "MANDO!", type: ActivityType.Watching },
   { name: "Once in a Six Side", type: ActivityType.Watching },
-  { name: "NIGHTRIDE", type: ActivityType.Watching },
+  { name: "The Continental", type: ActivityType.Watching },
   { name: "Ahsoka", type: ActivityType.Watching },
   { name: "Star Trek: Strange New Worlds", type: ActivityType.Watching },
   { name: "BattleBit", type: ActivityType.Playing },
