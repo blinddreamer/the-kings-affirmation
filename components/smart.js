@@ -19,12 +19,15 @@ async function answerQuestion(question) {
   }
 }
 
-async function handleMessage(message) {
-  console.log("Message received:", message.content);
+client.on("ready", () => {
+  console.log(`Logged in as ${client.user.tag}`);
+});
+
+client.on("message", async (message) => {
+  if (message.author.bot) return; // Ignore messages from bots
 
   // Check if the message mentions the bot
-  if (message.content.match(/^<@!?${client.user.id}>( |)$/)) {
-
+  if (message.content.match(new RegExp(`^<@!?${client.user.id}>( |)$`))) {
     try {
       const answer = await answerQuestion(message.content);
 
@@ -42,8 +45,4 @@ async function handleMessage(message) {
       message.reply("ME NOT THAT SMART.");
     }
   }
-}
-
-module.exports = {
-  handleMessage,
-};
+});
