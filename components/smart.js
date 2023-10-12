@@ -19,7 +19,8 @@ async function answerQuestion(question) {
   }
 }
 
-client.on('message', message => {
+// Create an async function to handle messages
+async function handleMessages(message) {
   if (message.mentions.has(client.user)) {
     try {
       const answer = await answerQuestion(message.content);
@@ -38,4 +39,7 @@ client.on('message', message => {
       message.reply("ME NOT THAT SMART.");
     }
   }
-});
+}
+
+// Attach the event listener to the client
+client.on('message', handleMessages);
