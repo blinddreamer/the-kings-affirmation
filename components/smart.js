@@ -1,20 +1,26 @@
 // smart.js
 const { sendLongMessage } = require("./LongMessage");
-const tectalicOpenai = require("@tectalic/openai").default;
+const { ChatCompletionCreateParams, ChatCompletion } = require("openai"); // Import required OpenAI modules
 const { Client } = require("discord.js");
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const openai = tectalicOpenai(OPENAI_API_KEY);
+const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
 
 async function answerQuestion(question) {
   try {
-    const gptResponse = await openai.chatCompletions.create({
-      model: "gpt-3.5-turbo",
+    const params: ChatCompletionCreateParams = {
       messages: [{ role: "user", content: question }],
-      timeout: 15000, // Set a longer timeout (e.g., 15 seconds)
-    });
+      model: "gpt-3.5-turbo",
+    };
 
-    return gptResponse.data.choices[0].message.content.trim();
+    const gptResponse: ChatCompletion = await openai.chat.completions.create(
+      params
+    );
+
+    return (
+      gptResponse.choices[0]?.message?.content.trim() ||
+      "No response from OpenAI"
+    );
   } catch (error) {
     console.error("Error fetching response from OpenAI:", error.message);
     throw error;
