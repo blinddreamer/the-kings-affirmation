@@ -1,5 +1,4 @@
 // app.js
-
 const { Client, GatewayIntentBits, Partials } = require("discord.js");
 const { setupRoles } = require("./components/roles");
 const { handleMessage } = require("./components/smart");
@@ -44,6 +43,8 @@ client.on("ready", () => {
   }, 6 * 60 * 60 * 1000);
 });
 
-client.on("messageCreate", handleMessage);
+client.on("messageCreate", (message) => {
+  handleMessage(message, client); // Pass the client object to handleMessage
+});
 
 client.login(process.env.DISCORD_TOKEN);

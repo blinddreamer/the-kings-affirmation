@@ -1,3 +1,4 @@
+//smart.js
 const { sendLongMessage } = require("./LongMessage");
 const tectalicOpenai = require("@tectalic/openai").default;
 const { Client } = require("discord.js");
