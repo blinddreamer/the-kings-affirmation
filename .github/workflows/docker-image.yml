@@ -17,7 +17,7 @@ jobs:
         run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
 
       - name: Build Docker image
-        run: docker build -t ghcr.io/kingz:latest .
+        run: docker build -t ghcr.io/${{ github.repository }}:latest .
 
       - name: Push Docker image
         run: docker push ghcr.io/${{ github.repository }}:latest
@@ -32,8 +32,8 @@ jobs:
 
       - name: Cleanup older images
         run: |
-          IMAGE_NAME=ghcr.io/kingz
-          OLD_IMAGES=$(docker images --format "kingz:{{.Tag}}" | grep $IMAGE_NAME | sort -r | tail -n +6)
+          IMAGE_NAME=ghcr.io/${{ github.repository }}
+          OLD_IMAGES=$(docker images --format "{{.Repository}}:{{.Tag}}" | grep $IMAGE_NAME | sort -r | tail -n +6)
           if [ -n "$OLD_IMAGES" ]; then
             echo "Removing older images:"
             echo "$OLD_IMAGES" | xargs -I {} docker rmi {}
