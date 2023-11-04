@@ -17,10 +17,10 @@ jobs:
         run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
 
       - name: Build Docker image
-        run: docker build -t ghcr.io/$kings:latest .
+        run: docker build -t ghcr.io/kings:latest .
 
       - name: Push Docker image
-        run: docker push ghcr.io/$kings:latest
+        run: docker push ghcr.io/kings:latest
 
   cleanup_old_images:
     runs-on: ubuntu-latest
@@ -32,7 +32,7 @@ jobs:
 
       - name: Cleanup older images
         run: |
-          IMAGE_NAME=ghcr.io/$kings
+          IMAGE_NAME=ghcr.io/kings
           OLD_IMAGES=$(docker images --format "kings:{{.Tag}}" | grep $IMAGE_NAME | sort -r | tail -n +6)
           if [ -n "$OLD_IMAGES" ]; then
             echo "Removing older images:"
