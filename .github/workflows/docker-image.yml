@@ -3,7 +3,7 @@ name: Docker Image CI
 on:
   push:
     branches:
-      - master
+      - dev
 
 jobs:
   build_and_push:
@@ -11,16 +11,16 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
 
       - name: Login to GitHub Container Registry
         run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
 
       - name: Build Docker image
-        run: docker build -t ghcr.io/kings:latest .
+        run: docker build -t ghcr.io/kingz:latest .
 
       - name: Push Docker image
-        run: docker push ghcr.io/kings:latest
+        run: docker push ghcr.io/${{ github.repository }}:latest
 
   cleanup_old_images:
     runs-on: ubuntu-latest
@@ -32,8 +32,8 @@ jobs:
 
       - name: Cleanup older images
         run: |
-          IMAGE_NAME=ghcr.io/kings
-          OLD_IMAGES=$(docker images --format "kings:{{.Tag}}" | grep $IMAGE_NAME | sort -r | tail -n +6)
+          IMAGE_NAME=ghcr.io/kingz
+          OLD_IMAGES=$(docker images --format "kingz:{{.Tag}}" | grep $IMAGE_NAME | sort -r | tail -n +6)
           if [ -n "$OLD_IMAGES" ]; then
             echo "Removing older images:"
             echo "$OLD_IMAGES" | xargs -I {} docker rmi {}
