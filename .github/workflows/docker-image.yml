@@ -32,22 +32,20 @@ jobs:
 
       - name: Cleanup older images
         run: |
+          # Set the image name
           IMAGE_NAME=ghcr.io/blinddreamer/the-kings-affirmation
-          ALL_IMAGES=$(docker images --format "{{.Repository}}:{{.Tag}}" | grep $IMAGE_NAME)
-          CURRENT_IMAGES=$(echo "$ALL_IMAGES" | grep "WEdaKINGZ")
-          OLD_IMAGES=$(echo "$ALL_IMAGES" | grep -v "WEdaKINGZ" | sort -r | tail -n +6)
 
-          if [ -n "$OLD_IMAGES" ]; then
-            echo "Removing older images:"
-            echo "$OLD_IMAGES" | xargs -I {} docker rmi {}
-          else
-            echo "No older images to remove."
-          fi
+          # List all images
+          docker images
 
-          # Check if there are more than 5 images with the "WEdaKINGZ" tag
-          if [ "$(echo "$CURRENT_IMAGES" | wc -l)" -gt 5 ]; then
-            echo "Removing excess images with 'WEdaKINGZ' tag:"
-            echo "$CURRENT_IMAGES" | tail -n +6 | xargs -I {} docker rmi {}
-          else
-            echo "No excess images with 'WEdaKINGZ' tag to remove."
-          fi
+          # Remove older images (keep the latest 5)
+          docker images --format "{{.Repository}}:{{.Tag}}" | grep $IMAGE_NAME | grep -v "WEdaKINGZ" | sort -r | tail -n +6 | xargs -I {} docker rmi {}
+
+          # List images after removal
+          docker images
+
+          # Remove excess images with 'WEdaKINGZ' tag (keep the latest 5)
+          docker images --format "{{.Repository}}:{{.Tag}}" | grep $IMAGE_NAME | grep "WEdaKINGZ" | tail -n +6 | xargs -I {} docker rmi {}
+
+          # List images after removal
+          docker images
