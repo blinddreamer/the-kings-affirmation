@@ -51,4 +51,3 @@ jobs:
           else
             echo "No excess images with 'WEdaKINGZ' tag to remove."
           fi
-
