@@ -30,7 +30,7 @@ You can also run the bot using Docker:
 1. **Pull the Docker Image** from the GitHub Container Registry (GHCR):
 
    ```bash
-   docker pull ghcr.io/your-username/the-kings-affirmation:latest
+   docker pull ghcr.io/your-username/the-kings-affirmation:WEdaKINGZ
    ```
 
 2. **Create a Docker Container** with your environment variables set:
@@ -39,7 +39,7 @@ You can also run the bot using Docker:
    docker run -d \
      -e DISCORD_TOKEN=YOUR_DISCORD_BOT_TOKEN \
      -e OPENAI_API_KEY=YOUR_OPENAI_API_KEY \
-     ghcr.io/blinddreamer/the-kings-affirmation:latest
+     ghcr.io/blinddreamer/the-kings-affirmation:WEdaKINGZ
    ```
 
    Replace `YOUR_DISCORD_BOT_TOKEN` and `YOUR_OPENAI_API_KEY` with your actual Discord bot token and OpenAI API key.

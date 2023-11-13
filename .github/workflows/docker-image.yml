@@ -34,18 +34,13 @@ jobs:
         run: |
           # Set the image name
           IMAGE_NAME=ghcr.io/blinddreamer/the-kings-affirmation
-
           # List all images
           docker images
-
           # Remove older images (keep the latest 5)
           docker images --format "{{.Repository}}:{{.Tag}}" | grep $IMAGE_NAME | grep -v "WEdaKINGZ" | sort -r | tail -n +6 | xargs -I {} docker rmi {}
-
           # List images after removal
           docker images
-
           # Remove excess images with 'WEdaKINGZ' tag (keep the latest 5)
           docker images --format "{{.Repository}}:{{.Tag}}" | grep $IMAGE_NAME | grep "WEdaKINGZ" | tail -n +6 | xargs -I {} docker rmi {}
-
           # List images after removal
           docker images
