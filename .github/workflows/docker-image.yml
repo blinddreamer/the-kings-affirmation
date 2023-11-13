@@ -16,15 +16,11 @@ jobs:
       - name: Login to GitHub Container Registry
         run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
 
-      - name: Extract push comment as tag
-        id: extract_tag
-        run: echo "::set-output name=TAG::$(echo "${{ github.event.head_commit.message }}" | tr -cd '[:alnum:]._-' | tr '[:upper:]' '[:lower:]')"
-
       - name: Build Docker image
-        run: docker build -t ghcr.io/${{ github.repository }}:${{ steps.extract_tag.outputs.TAG }} .
+        run: docker build -t ghcr.io/${{ github.repository }}:WEdaKINGZ .
 
       - name: Push Docker image
-        run: docker push ghcr.io/${{ github.repository }}:${{ steps.extract_tag.outputs.TAG }}
+        run: docker push ghcr.io/${{ github.repository }}:WEdaKINGZ
 
   cleanup_old_images:
     runs-on: ubuntu-latest
@@ -37,12 +33,21 @@ jobs:
       - name: Cleanup older images
         run: |
           IMAGE_NAME=ghcr.io/${{ github.repository }}
-          ALL_IMAGES=$(docker images --format "{{.Repository}}:{{.Tag}}" | grep $IMAGE_NAME | sort -r)
-          OLD_IMAGES=$(echo "$ALL_IMAGES" | tail -n +6)
+          ALL_IMAGES=$(docker images --format "{{.Repository}}:{{.Tag}}" | grep $IMAGE_NAME)
+          CURRENT_IMAGES=$(echo "$ALL_IMAGES" | grep "WEdaKINGZ")
+          OLD_IMAGES=$(echo "$ALL_IMAGES" | grep -v "WEdaKINGZ" | sort -r | tail -n +6)
           
           if [ -n "$OLD_IMAGES" ]; then
             echo "Removing older images:"
             echo "$OLD_IMAGES" | xargs -I {} docker rmi {}
           else
             echo "No older images to remove."
+          fi
+
+          # Check if there are more than 5 images with the "WEdaKINGZ" tag
+          if [ $(echo "$CURRENT_IMAGES" | wc -l) -gt 5 ]; then
+            echo "Removing excess images with 'WEdaKINGZ' tag:"
+            echo "$CURRENT_IMAGES" | tail -n +6 | xargs -I {} docker rmi {}
+          else
+            echo "No excess images with 'WEdaKINGZ' tag to remove."
           fi
