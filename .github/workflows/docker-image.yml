@@ -18,7 +18,7 @@ jobs:
 
       - name: Extract push comment as tag
         id: extract_tag
-        run: echo "::set-output name=TAG::${{ github.event.head_commit.message }}"
+        run: echo "::set-output name=TAG::$(echo "${{ github.event.head_commit.message }}" | tr -cd '[:alnum:]._-' | tr '[:upper:]' '[:lower:]')"
 
       - name: Build Docker image
         run: docker build -t ghcr.io/${{ github.repository }}:${{ steps.extract_tag.outputs.TAG }} .
