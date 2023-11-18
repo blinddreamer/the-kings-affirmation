@@ -32,8 +32,8 @@ jobs:
 
       - name: Cleanup older images
         run: |
-          # Set the image name
-          IMAGE_NAME=ghcr.io/blinddreamer/the-kings-affirmation
+          # Set the image name dynamically
+          IMAGE_NAME=ghcr.io/${{ github.repository }} 
           # List all images
           docker images
           # Remove older images (keep the latest 5)
