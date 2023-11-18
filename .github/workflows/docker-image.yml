@@ -17,10 +17,10 @@ jobs:
         run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
 
       - name: Build Docker image
-        run: docker build -t ghcr.io/${{ github.repository }}:WEdaKINGZ .
+        run: docker build -t ghcr.io/${{ github.repository }}:wedakingz .
 
       - name: Push Docker image
-        run: docker push ghcr.io/${{ github.repository }}:WEdaKINGZ
+        run: docker push ghcr.io/${{ github.repository }}:wedakingz
 
   cleanup_old_images:
     runs-on: ubuntu-latest
@@ -33,21 +33,15 @@ jobs:
       - name: Cleanup older images
         run: |
           # Set the image name dynamically
-          IMAGE_NAME=ghcr.io/${{ github.repository }}
-          # Set the new image tag
-          NEW_TAG=WEdaKINGZ
+          IMAGE_NAME=ghcr.io/${{ github.repository }} 
           # Set the tag for old images (use a timestamp or version number)
           OLD_TAG=old_$(date +%Y%m%d%H%M%S)
-
+          
           # List all images
           docker images
-
-          # Tag the current image as the new tag
-          docker tag $IMAGE_NAME:$NEW_TAG $IMAGE_NAME:$NEW_TAG
-
+          
           # Tag the older images with the specified tag
-          docker images --format "{{.ID}} {{.Repository}}:{{.Tag}}" | grep $IMAGE_NAME | sort -k1,1 | awk '{print $2":"$3}' | xargs -I {} docker rmi {}
-
+          docker images --format "{{.ID}} {{.Repository}}:{{.Tag}}" | grep $IMAGE_NAME | sort -k1,1 | awk '{print $2":"$3}' | xargs -I {} docker tag {} $IMAGE_NAME:$OLD_TAG
 
           # List images after tagging
           docker images
