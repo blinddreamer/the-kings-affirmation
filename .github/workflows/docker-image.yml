@@ -22,7 +22,7 @@ jobs:
       - name: Push Docker image
         run: docker push ghcr.io/${{ github.repository }}:WEdaKINGZ
 
-    cleanup_old_images:
+  cleanup_old_images:
     runs-on: ubuntu-latest
     needs: build_and_push
 
