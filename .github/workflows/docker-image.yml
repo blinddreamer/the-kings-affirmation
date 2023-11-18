@@ -46,7 +46,8 @@ jobs:
           docker tag $IMAGE_NAME:$NEW_TAG $IMAGE_NAME:$NEW_TAG
 
           # Tag the older images with the specified tag
-          docker images --format "{{.Repository}}:{{.Tag}}" | grep $IMAGE_NAME | sort -r | tail -n +6 | xargs -I {} docker tag {} $IMAGE_NAME:$OLD_TAG
+          docker images --format "{{.ID}} {{.Repository}}:{{.Tag}}" | grep $IMAGE_NAME | sort -k1,1 | awk '{print $2":"$3}' | xargs -I {} docker rmi {}
+
 
           # List images after tagging
           docker images
