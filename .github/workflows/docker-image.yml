@@ -33,10 +33,20 @@ jobs:
       - name: Cleanup older images
         run: |
           # Set the image name dynamically
-          IMAGE_NAME=ghcr.io/${{ github.repository }} 
+          IMAGE_NAME=ghcr.io/${{ github.repository }}
+          # Set the new image tag
+          NEW_TAG=WEdaKINGZ
+          # Set the tag for old images (use a timestamp or version number)
+          OLD_TAG=old_$(date +%Y%m%d%H%M%S)
+
           # List all images
           docker images
-          # Remove older images (keep the latest 5), including untagged images
-          docker images --format "{{.Repository}}:{{.Tag}}" | grep $IMAGE_NAME | sort -r | tail -n +6 | xargs -I {} docker rmi {}
-          # List images after removal
+
+          # Tag the current image as the new tag
+          docker tag $IMAGE_NAME:$NEW_TAG $IMAGE_NAME:$NEW_TAG
+
+          # Tag the older images with the specified tag
+          docker images --format "{{.Repository}}:{{.Tag}}" | grep $IMAGE_NAME | sort -r | tail -n +6 | xargs -I {} docker tag {} $IMAGE_NAME:$OLD_TAG
+
+          # List images after tagging
           docker images
