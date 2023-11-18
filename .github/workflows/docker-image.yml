@@ -22,7 +22,7 @@ jobs:
       - name: Push Docker image
         run: docker push ghcr.io/${{ github.repository }}:WEdaKINGZ
 
-  cleanup_old_images:
+    cleanup_old_images:
     runs-on: ubuntu-latest
     needs: build_and_push
 
@@ -36,11 +36,7 @@ jobs:
           IMAGE_NAME=ghcr.io/${{ github.repository }} 
           # List all images
           docker images
-          # Remove older images (keep the latest 5)
-          docker images --format "{{.Repository}}:{{.Tag}}" | grep $IMAGE_NAME | grep -v "WEdaKINGZ" | sort -r | tail -n +6 | xargs -I {} docker rmi {}
-          # List images after removal
-          docker images
-          # Remove excess images with 'WEdaKINGZ' tag (keep the latest 5)
-          docker images --format "{{.Repository}}:{{.Tag}}" | grep $IMAGE_NAME | grep "WEdaKINGZ" | tail -n +6 | xargs -I {} docker rmi {}
+          # Remove older images (keep the latest 5), including untagged images
+          docker images --format "{{.Repository}}:{{.Tag}}" | grep $IMAGE_NAME | sort -r | tail -n +6 | xargs -I {} docker rmi {}
           # List images after removal
           docker images
