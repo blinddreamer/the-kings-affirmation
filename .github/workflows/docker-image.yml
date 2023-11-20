@@ -33,15 +33,15 @@ jobs:
       - name: Cleanup older images
         run: |
           # Set the image name dynamically
-          IMAGE_NAME=ghcr.io/${{ github.repository }} 
-          # Set the tag for old images (use a timestamp or version number)
-          OLD_TAG=old_$(date +%Y%m%d%H%M%S)
-          
-          # List all images
-          docker images
-          
-          # Tag the older images with the specified tag
-          docker images --format "{{.ID}} {{.Repository}}:{{.Tag}}" | grep $IMAGE_NAME | sort -k1,1 | awk '{print $2":"$3}' | xargs -I {} docker tag {} $IMAGE_NAME:$OLD_TAG
+          IMAGE_NAME=ghcr.io/${{ github.repository }}
 
-          # List images after tagging
+          # Tag older images with a timestamp-based tag
+          for image in $(docker images --format "{{.ID}} {{.Repository}}:{{.Tag}}" | grep "^${IMAGE_NAME}:.*" | sort -k1,1 | awk '{print $2":"$3}'); do
+            docker tag "$image" "${IMAGE_NAME}:$(date +%Y%m%d%H%M%S)"
+          done
+
+          # List images after tagging to verify tagging
           docker images
+
+          # Remove older images
+          docker image prune -a
