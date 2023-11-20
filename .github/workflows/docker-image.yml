@@ -30,7 +30,11 @@ jobs:
       - name: Login to GitHub Container Registry
         run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
 
-      - name: Cleanup older images
+      - name: Count images before tagging
+        id: count_images_before
+        run: echo $(docker images --format="{{.ID}}") | wc -l
+
+      - name: Tag older images with a timestamp-based tag
         run: |
           # Set the image name dynamically
           IMAGE_NAME=ghcr.io/${{ github.repository }}
@@ -43,5 +47,10 @@ jobs:
           # List images after tagging to verify tagging
           docker images
 
-          # Remove older images
-          docker image prune -a
+      - name: Count images after tagging
+        id: count_images_after
+        run: echo $(docker images --format="{{.ID}}") | wc -l
+
+      - name: Remove older images if count is greater than 6
+        if: steps.count_images_after.outputs.count > 6
+        run: docker image prune -a
