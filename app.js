@@ -3,6 +3,7 @@ const { Client, GatewayIntentBits, Partials } = require("discord.js");
 const { setupRoles } = require("./components/roles");
 const { handleMessage } = require("./components/smart");
 const { getRandomActivity } = require("./components/activityOptions");
+const { checkYouTubeChannels } = require("./components/tube");
 
 const client = new Client({
   partials: [Partials.Message, Partials.Reaction],
@@ -41,6 +42,14 @@ client.on("ready", () => {
     const newActivity = getRandomActivity(); // Update activity periodically
     client.user.setActivity(newActivity);
   }, 6 * 60 * 60 * 1000);
+
+  // Specify the target channel ID
+  const targetChannelId = "482315570201755664";
+
+  // Call checkYouTubeChannels every 24h for the specified channel
+  setInterval(() => {
+    checkYouTubeChannels(client, targetChannelId);
+  }, 24 * 60 * 60 * 1000);
 });
 
 client.on("messageCreate", (message) => {
