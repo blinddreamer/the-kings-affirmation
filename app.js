@@ -46,10 +46,10 @@ client.on("ready", () => {
   // Specify the target channel ID
   const targetChannelId = "482315570201755664";
 
-  // Call checkYouTubeChannels every 24h for the specified channel
+  // Call checkYouTubeChannels every 168h(1week) for the specified channel
   setInterval(() => {
     checkYouTubeChannels(client, targetChannelId);
-  }, 24 * 60 * 60 * 1000);
+  }, 168 * 60 * 60 * 1000);
 });
 
 client.on("messageCreate", (message) => {
