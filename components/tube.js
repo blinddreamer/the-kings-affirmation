@@ -11,6 +11,7 @@ const channelIds = [
   "UCPYlj5jmsH2_cmumBB6Jv1w", //tomato 2
   "UCTeLqJq1mXUX5WWoNXLmOIA", //SC offi
   "UCoMc7KVInwWQgbpo7PezIJQ", //voidi
+  "UC0z2Y04PZNbXNA9tjVMI0kA", //answerthecall
 ];
 
 const apiKey = process.env.YT_API;
