@@ -28,7 +28,12 @@ const dbConfig = {
 let connection;
 
 async function connectToDatabase() {
-  connection = await mysql.createConnection(dbConfig);
+  try {
+    connection = await mysql.createConnection(dbConfig);
+    console.log("Connected to the database!");
+  } catch (error) {
+    console.error("Error connecting to the database:", error.message);
+  }
 }
 
 async function loadPostedVideoIds() {
