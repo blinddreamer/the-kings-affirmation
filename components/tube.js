@@ -7,12 +7,12 @@ const channelIds = [
   "UCbgREE7EbOfejxW3oQoX47w", // Mike reacts
   "UCO7jewStDoxh5siZcNSCkww", // DESINKO
   "UCiPdjrLoUsyJh3XS7Aw7rzg", // Morf
-  "UCjG18qTsHaJDnpqWOXWXLSw", //runners
-  "UCCFsPbWPqGWg2oUhPM27X6g", //tomato
-  "UCPYlj5jmsH2_cmumBB6Jv1w", //tomato 2
-  "UCTeLqJq1mXUX5WWoNXLmOIA", //SC offi
-  "UCoMc7KVInwWQgbpo7PezIJQ", //voidi
-  "UC0z2Y04PZNbXNA9tjVMI0kA", //answerthecall
+  "UCjG18qTsHaJDnpqWOXWXLSw", // runners
+  "UCCFsPbWPqGWg2oUhPM27X6g", // tomato
+  "UCPYlj5jmsH2_cmumBB6Jv1w", // tomato 2
+  "UCTeLqJq1mXUX5WWoNXLmOIA", // SC offi
+  "UCoMc7KVInwWQgbpo7PezIJQ", // voidi
+  "UC0z2Y04PZNbXNA9tjVMI0kA", // answerthecall
 ];
 
 const apiKey = process.env.YT_API;
@@ -22,7 +22,7 @@ const dbConfig = {
   host: process.env.sql_host,
   user: process.env.sql_user,
   password: process.env.sql_password,
-  database: "discord_bot_db", // Use the name of your database
+  database: "discord_bot_db",
 };
 
 let connection;
