@@ -1,5 +1,6 @@
 // tube.js
 const axios = require("axios");
+const mysql = require("mysql2/promise");
 
 const channelIds = [
   "UCOblfLLbNni0_VUeGWhiKDw", // Mike
@@ -15,6 +16,47 @@ const channelIds = [
 ];
 
 const apiKey = process.env.YT_API;
+
+// MySQL database connection configuration
+const dbConfig = {
+  host: process.env.sql_host,
+  user: process.env.sql_user,
+  password: process.env.sql_password,
+  database: "discord_bot_db", // Use the name of your database
+};
+
+let connection;
+
+async function connectToDatabase() {
+  connection = await mysql.createConnection(dbConfig);
+}
+
+async function loadPostedVideoIds() {
+  try {
+    await connectToDatabase();
+    const [rows] = await connection.query("SELECT video_id FROM posted_videos");
+    return rows.map((row) => row.video_id);
+  } catch (error) {
+    console.error("Error loading posted video IDs:", error.message);
+    throw error;
+  } finally {
+    await connection.end();
+  }
+}
+
+async function savePostedVideoId(videoId) {
+  try {
+    await connectToDatabase();
+    await connection.query("INSERT INTO posted_videos (video_id) VALUES (?)", [
+      videoId,
+    ]);
+  } catch (error) {
+    console.error("Error saving posted video ID:", error.message);
+    throw error;
+  } finally {
+    await connection.end();
+  }
+}
 
 async function getLatestVideoId(channelIdYoutube) {
   try {
@@ -33,34 +75,45 @@ async function getLatestVideoId(channelIdYoutube) {
 }
 
 async function checkYouTubeChannels(client, targetChannelId) {
-  const newVideos = [];
+  try {
+    // Load posted video IDs from the database
+    const postedVideoIds = await loadPostedVideoIds();
 
-  for (const channelIdYoutube of channelIds) {
-    try {
-      const latestVideoId = await getLatestVideoId(channelIdYoutube);
-      if (latestVideoId) {
-        const targetChannel =
-          typeof targetChannelId === "string"
-            ? await client.channels.fetch(targetChannelId).catch((error) => {
-                console.error("Error fetching channel:", error.message);
-                return null;
-              })
-            : targetChannelId;
+    for (const channelIdYoutube of channelIds) {
+      try {
+        const latestVideoId = await getLatestVideoId(channelIdYoutube);
+        if (latestVideoId && !postedVideoIds.includes(latestVideoId)) {
+          const targetChannel =
+            typeof targetChannelId === "string"
+              ? await client.channels.fetch(targetChannelId).catch((error) => {
+                  console.error("Error fetching channel:", error.message);
+                  return null;
+                })
+              : targetChannelId;
 
-        if (targetChannel) {
-          console.log(`Sending notification to channel ${targetChannel.name}`);
-          targetChannel.send(
-            `New video for ${channelIdYoutube}: https://www.youtube.com/watch?v=${latestVideoId}`
-          );
-        } else {
-          console.error(
-            "Channel not found. Make sure the provided channel ID is correct."
-          );
+          if (targetChannel) {
+            console.log(
+              `Sending notification to channel ${targetChannel.name}`
+            );
+            targetChannel.send(
+              `New video for ${channelIdYoutube}: https://www.youtube.com/watch?v=${latestVideoId}`
+            );
+
+            // Add the posted video ID to the database
+            await savePostedVideoId(latestVideoId);
+          } else {
+            console.error(
+              "Channel not found. Make sure the provided channel ID is correct."
+            );
+          }
         }
+      } catch (error) {
+        console.error(`Error checking ${channelIdYoutube}:`, error.message);
       }
-    } catch (error) {
-      console.error(`Error checking ${channelIdYoutube}:`, error.message);
     }
+  } catch (error) {
+    console.error("Error in checkYouTubeChannels:", error.message);
+    throw error;
   }
 }
 
