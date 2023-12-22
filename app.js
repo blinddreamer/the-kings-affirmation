@@ -48,10 +48,10 @@ client.on("ready", () => {
     console.log(`Updated activity to: ${newActivity.name}`);
   }, 6 * 60 * 60 * 1000);
 
+  //tube
   // Specify the target channel ID
   const targetChannelId = "482315570201755664";
 
-  //tube
   // Schedule the checkYouTubeChannels function to run every 24 hours
   const oneDayInMilliseconds = 24 * 60 * 60 * 1000;
 
@@ -64,8 +64,8 @@ client.on("ready", () => {
       checkYouTubeChannels(client, targetChannelId);
     }, oneDayInMilliseconds);
   }, oneDayInMilliseconds - (Date.now() % oneDayInMilliseconds));
+  //tube
 });
-//tube
 
 // Event handling for incoming messages
 client.on("messageCreate", (message) => {
