@@ -51,18 +51,21 @@ client.on("ready", () => {
   // Specify the target channel ID
   const targetChannelId = "482315570201755664";
 
-  // Schedule the checkYouTubeChannels function to run every Friday at 9 PM
-  const fridayNinePM = new Date();
-  fridayNinePM.setHours(21, 0, 0, 0);
-  const timeUntilFridayNine = fridayNinePM.getTime() - Date.now();
-  setTimeout(() => {
+
+ //tube 
+ // Schedule the checkYouTubeChannels function to run every 24 hours
+const oneDayInMilliseconds = 24 * 60 * 60 * 1000;
+
+// Initial run
+setTimeout(() => {
+  checkYouTubeChannels(client, targetChannelId);
+
+  // Schedule the next run every 24 hours
+  setInterval(() => {
     checkYouTubeChannels(client, targetChannelId);
-    // Schedule the next run for the following Friday at 9 PM
-    setInterval(() => {
-      checkYouTubeChannels(client, targetChannelId);
-    }, 7 * 24 * 60 * 60 * 1000);
-  }, timeUntilFridayNine);
-});
+  }, oneDayInMilliseconds);
+}, oneDayInMilliseconds - (Date.now() % oneDayInMilliseconds));
+//tube
 
 // Event handling for incoming messages
 client.on("messageCreate", (message) => {
