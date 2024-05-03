@@ -1,9 +1,9 @@
 // smart.js
 const { sendLongMessage } = require("./LongMessage");
-const OpenAI = require("openai"); // Correct import
+const { OpenAI } = require("openai"); // Updated import to use destructuring
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+const openai = new OpenAI(OPENAI_API_KEY); // Updated initialization without passing an object
 
 async function answerQuestion(question) {
   try {
