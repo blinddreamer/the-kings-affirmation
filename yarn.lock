@@ -99,9 +99,9 @@
     form-data "^4.0.0"
 
 "@types/node@*":
-  version "20.12.7"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.12.7.tgz#04080362fa3dd6c5822061aa3124f5c152cff384"
-  integrity sha512-wq0cICSkRLVaf3UGLMGItu/PtdY7oaXaI/RVU+xliKVOtRna3PRY57ZDfztpDL0n11vfymMUnXv8QwYCO7L1wg==
+  version "20.12.8"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.12.8.tgz#35897bf2bfe3469847ab04634636de09552e8256"
+  integrity sha512-NU0rJLJnshZWdE/097cdCBbyW1h4hEg0xpovcoAQYHl8dnEyp/NAOiE45pvc+Bd1Dt+2r94v2eGFpQJ4R7g+2w==
   dependencies:
     undici-types "~5.26.4"
 
@@ -441,9 +441,9 @@ nth-check@^2.0.1:
     boolbase "^1.0.0"
 
 openai@^4.12.1:
-  version "4.38.5"
-  resolved "https://registry.yarnpkg.com/openai/-/openai-4.38.5.tgz#87de78eed9f7e63331fb6b1307d8c9dd986b39d0"
-  integrity sha512-Ym5GJL98ZhLJJ7enBx53jjG3vwN/fsB+Ozh46nnRZZS9W1NiYqbwkJ+sXd3dkCIiWIgcyyOPL2Zr8SQAzbpj3g==
+  version "4.40.1"
+  resolved "https://registry.yarnpkg.com/openai/-/openai-4.40.1.tgz#095a8b7c2af7b05617ab83c825aaa944195d7e7d"
+  integrity sha512-mS7LerF4fY1/we0aKGGwIWtosTJFLKuNbBWMBR/G1TAZUHoktAdod0dqIrlQvSD39uS6jNEEbT7jRsXmzfEPBw==
   dependencies:
     "@types/node" "^18.11.18"
     "@types/node-fetch" "^2.6.4"
