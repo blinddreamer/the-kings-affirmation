@@ -5,7 +5,7 @@ const mysql = require("mysql2/promise");
 const channelIds = [
   "UCOblfLLbNni0_VUeGWhiKDw", // Mike
   "UCbgREE7EbOfejxW3oQoX47w", // Mike reacts
-  "UCO7jewStDoxh5siZcNSCkww", // DESINKO
+  "UCCbMa44VWmxLAL_8ltnhQcA", // uni stanton
   "UCiPdjrLoUsyJh3XS7Aw7rzg", // Morf
   "UCjG18qTsHaJDnpqWOXWXLSw", // runners
   "UCCFsPbWPqGWg2oUhPM27X6g", // tomato
