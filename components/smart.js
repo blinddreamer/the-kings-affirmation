@@ -8,6 +8,11 @@ function cleanQuestion(question) {
   return question.replace(/<@\d+>/g, "").trim(); // Removes mentions like <@1234567890>
 }
 
+// Function to clean the response by removing <think> tags
+function cleanResponse(response) {
+  return response.replace(/<think>.*?<\/think>/gs, "").trim(); // Removes <think></think> and everything in between
+}
+
 async function answerQuestion(question) {
   try {
     // Clean up the question to remove user IDs or mentions
@@ -23,7 +28,10 @@ async function answerQuestion(question) {
       headers: { "Content-Type": "application/json" },
     });
 
-    return response.data.response?.trim() || "No response from DeepSeek";
+    // Clean the response to remove <think> tags
+    const cleanedAnswer = cleanResponse(response.data.response);
+
+    return cleanedAnswer || "No response from DeepSeek";
   } catch (error) {
     console.error("Error fetching response from DeepSeek:", error.message);
     throw error;
