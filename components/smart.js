@@ -1,25 +1,23 @@
-// smart.js
 const { sendLongMessage } = require("./LongMessage");
-const { OpenAI } = require("openai"); // Updated import to use destructuring
+const axios = require("axios"); // Using axios for HTTP requests
 
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const openai = new OpenAI(OPENAI_API_KEY); // Updated initialization without passing an object
+const DEEPSEEK_API_URL = process.env.DEEPSEEK_API_URL; // Ollama API
 
 async function answerQuestion(question) {
   try {
     const params = {
-      messages: [{ role: "user", content: question }],
-      model: "gpt-3.5-turbo",
+      model: "deepseek-r1:1.5b", // Ensure this matches your installed model name in Ollama
+      prompt: question,
+      stream: false,
     };
 
-    const gptResponse = await openai.chat.completions.create(params);
+    const response = await axios.post(DEEPSEEK_API_URL, params, {
+      headers: { "Content-Type": "application/json" },
+    });
 
-    return (
-      gptResponse.choices[0]?.message?.content.trim() ||
-      "No response from OpenAI"
-    );
+    return response.data.response?.trim() || "No response from DeepSeek";
   } catch (error) {
-    console.error("Error fetching response from OpenAI:", error.message);
+    console.error("Error fetching response from DeepSeek:", error.message);
     throw error;
   }
 }
@@ -28,7 +26,6 @@ async function handleMessage(message, client) {
   console.log("Message received:", message.content);
 
   if (message.mentions.has(client.user)) {
-    // Check if the message mentions the bot
     try {
       const answer = await answerQuestion(message.content);
 
