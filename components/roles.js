@@ -5,14 +5,9 @@ const { ReactionRole } = require("discordjs-reaction-role");
 function setupRoles(client) {
   const config = [
     {
-      messageId: "818172637393190933",  //plex
+      messageId: "818172637393190933", //plex
       roleId: "759091494215745557",
       reaction: "759103156285472818",
-    },
-    {
-      messageId: "820675271949680710",  //sot
-      roleId: "627688811966758922",
-      reaction: "759103156218757162",
     },
     {
       messageId: "820677513205383168", //sc
@@ -21,7 +16,7 @@ function setupRoles(client) {
     },
   ];
 
-  const manager = new ReactionRole(client, config); 
+  const manager = new ReactionRole(client, config);
 
   const destroy = () => {
     manager.teardown();
