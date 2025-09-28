@@ -3,16 +3,12 @@ const axios = require("axios");
 const mysql = require("mysql2/promise");
 
 const channelIds = [
-  "UCOblfLLbNni0_VUeGWhiKDw", // Mike
-  "UCbgREE7EbOfejxW3oQoX47w", // Mike reacts
-  "UCCbMa44VWmxLAL_8ltnhQcA", // uni stanton
-  "UCiPdjrLoUsyJh3XS7Aw7rzg", // Morf
-  "UCjG18qTsHaJDnpqWOXWXLSw", // runners
-  "UCCFsPbWPqGWg2oUhPM27X6g", // tomato
-  "UCPYlj5jmsH2_cmumBB6Jv1w", // tomato 2
-  "UCTeLqJq1mXUX5WWoNXLmOIA", // SC offi
-  "UCoMc7KVInwWQgbpo7PezIJQ", // voidi
-  "UC0z2Y04PZNbXNA9tjVMI0kA", // answerthecall
+  "UCVy1M_1OvZqBuOre6q-mz7g", // Loru
+  "UCmsL9Rk7HgVEIYj-pzTmSWg", // new eden post
+  "UCwF3VyalTHzL0L-GDlwtbRw", // CCP
+  "UCCHhZnVFfQJ1NP1p1Y6uZRQ", // OZ
+  "UC82eZ4W2tp7N8TRr2KMSrpA", // crashnaps
+  "UC7rx1i0VMqBVBtHBemFUaIA", // Kaiser Friedlich
 ];
 
 const apiKey = process.env.YT_API;

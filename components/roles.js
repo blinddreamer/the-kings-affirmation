@@ -10,7 +10,7 @@ function setupRoles(client) {
       reaction: "759103156285472818",
     },
     {
-      messageId: "820677513205383168", //sc
+      messageId: "820677513205383168", //eve
       roleId: "759093067772067890",
       reaction: "759103161276432384",
     },

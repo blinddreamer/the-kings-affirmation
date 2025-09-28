@@ -3,14 +3,14 @@
 const { ActivityType } = require("discord.js");
 
 const activityOptions = [
-  { name: "MANDO!", type: ActivityType.Watching },
+  { name: "DAN DA DAN", type: ActivityType.Watching },
   { name: "Dune: Part Two", type: ActivityType.Watching },
-  { name: "Daredevil: Born Again", type: ActivityType.Watching },
+  { name: "Sakamoto Days", type: ActivityType.Watching },
   { name: "Ahsoka", type: ActivityType.Watching },
   { name: "Star Trek: Strange New Worlds", type: ActivityType.Watching },
   { name: "The Legend of Vox Machina", type: ActivityType.Watching },
   { name: "The Day of the Jackal", type: ActivityType.Watching },
-  { name: "Cosculluela, O`Neill - Legendario", type: ActivityType.Listening },
+  { name: "Sleep Token - Emergence", type: ActivityType.Listening },
   { name: "EVE Online", type: ActivityType.Playing },
   {
     name: "Kings Of The Rollers - Somebody Else (feat. Lydia Plain)",
