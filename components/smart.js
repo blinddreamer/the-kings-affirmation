@@ -19,7 +19,7 @@ async function answerQuestion(question) {
     const cleanedQuestion = cleanQuestion(question);
 
     const params = {
-      model: "deepseek-r1:1.5b", // Ensure this matches your installed model name in Ollama
+      model: "qwen3:0.6b", // Ensure this matches your installed model name in Ollama
       prompt: cleanedQuestion,
       stream: false,
     };
