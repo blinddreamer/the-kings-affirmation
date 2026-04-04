@@ -1,7 +1,6 @@
 // app.js
 const { Client, GatewayIntentBits, Partials } = require("discord.js");
 const { setupRoles } = require("./components/roles");
-const { handleMessage } = require("./components/smart");
 const { getRandomActivity } = require("./components/activityOptions");
 const { checkYouTubeChannels } = require("./components/tube");
 
@@ -12,7 +11,6 @@ const client = new Client({
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.GuildMessageReactions,
-    GatewayIntentBits.MessageContent,
     GatewayIntentBits.GuildMembers,
   ],
 });
@@ -44,7 +42,7 @@ client.on("ready", () => {
   // Update activity every 6 hours
   setInterval(() => {
     const newActivity = getRandomActivity();
-    client.user.setActivity(newActivity);
+    client.user.setPresence({ activities: [newActivity], status: "online" });
     console.log(`Updated activity to: ${newActivity.name}`);
   }, 6 * 60 * 60 * 1000);
 
@@ -65,11 +63,6 @@ client.on("ready", () => {
     }, oneDayInMilliseconds);
   }, oneDayInMilliseconds - (Date.now() % oneDayInMilliseconds));
   //tube
-});
-
-// Event handling for incoming messages
-client.on("messageCreate", (message) => {
-  handleMessage(message, client);
 });
 
 // Log in to Discord using the provided token
