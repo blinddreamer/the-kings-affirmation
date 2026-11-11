@@ -3,7 +3,7 @@ const axios = require("axios");
 const mysql = require("mysql2/promise");
 
 const channelIds = [
-  "UCVy1M_1OvZqBuOre6q-mz7g", // Loru
+  "UCwjD8oI3cPSMBzQ0DT6qD_Q", // Bombeldo
   "UCmsL9Rk7HgVEIYj-pzTmSWg", // new eden post
   "UCwF3VyalTHzL0L-GDlwtbRw", // CCP
   "UCCHhZnVFfQJ1NP1p1Y6uZRQ", // OZ
@@ -11,114 +11,70 @@ const channelIds = [
   "UC7rx1i0VMqBVBtHBemFUaIA", // Kaiser Friedlich
 ];
 
-const apiKey = process.env.YT_API;
+// Videos older than this are ignored, so a fresh DB doesn't flood the channel.
+// Must be longer than the check interval.
+const LOOKBACK_MS = 2 * 24 * 60 * 60 * 1000;
 
-// MySQL database connection configuration
-const dbConfig = {
+// Lazy: connects on first query, reconnects on its own.
+const pool = mysql.createPool({
   host: process.env.sql_host,
   user: process.env.sql_user,
   password: process.env.sql_password,
   database: "discord_bot_db",
-};
+});
 
-let connection;
-
-async function connectToDatabase() {
-  try {
-    connection = await mysql.createConnection(dbConfig);
-    console.log("Connected to the database!");
-  } catch (error) {
-    console.error("Error connecting to the database:", error.message);
-  }
+// Recent uploads as [{ id, channelTitle }], oldest first.
+// ponytail: search costs 100 quota units/call (~700/day of 10k); uploads playlist is 1 unit if quota gets tight
+async function getRecentVideos(channelIdYoutube) {
+  const { data } = await axios.get(
+    "https://www.googleapis.com/youtube/v3/search",
+    {
+      params: {
+        part: "snippet",
+        channelId: channelIdYoutube,
+        type: "video",
+        order: "date",
+        maxResults: 5,
+        publishedAfter: new Date(Date.now() - LOOKBACK_MS).toISOString(),
+        key: process.env.YT_API,
+      },
+    }
+  );
+  return data.items
+    .map((item) => ({
+      id: item.id.videoId,
+      channelTitle: item.snippet.channelTitle,
+    }))
+    .reverse();
 }
 
-async function loadPostedVideoIds() {
-  try {
-    await connectToDatabase();
-    const [rows] = await connection.query("SELECT video_id FROM posted_videos");
-    return rows.map((row) => row.video_id);
-  } catch (error) {
-    console.error("Error loading posted video IDs:", error.message);
-    throw error;
-  } finally {
-    await connection.end();
-  }
-}
-
-async function savePostedVideoId(videoId) {
-  try {
-    await connectToDatabase();
-    await connection.query("INSERT INTO posted_videos (video_id) VALUES (?)", [
-      videoId,
-    ]);
-  } catch (error) {
-    console.error("Error saving posted video ID:", error.message);
-    throw error;
-  } finally {
-    await connection.end();
-  }
-}
-
-async function getLatestVideoId(channelIdYoutube) {
-  try {
-    const response = await axios.get(
-      `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelIdYoutube}&type=video&order=date&maxResults=1&key=${apiKey}`
-    );
-
-    const latestVideoId = response.data.items[0]?.id.videoId;
-    console.log("Latest Video ID:", latestVideoId);
-
-    return latestVideoId;
-  } catch (error) {
-    console.error("Error in getLatestVideoId:", error.message);
-    throw error;
-  }
-}
-
+// Never rejects: errors are logged so a bad run can't crash the bot.
 async function checkYouTubeChannels(client, targetChannelId) {
   try {
-    // Load posted video IDs from the database
-    const postedVideoIds = await loadPostedVideoIds();
+    const [rows] = await pool.query("SELECT video_id FROM posted_videos");
+    const posted = new Set(rows.map((row) => row.video_id));
+    const target = await client.channels.fetch(targetChannelId);
 
     for (const channelIdYoutube of channelIds) {
       try {
-        const latestVideoId = await getLatestVideoId(channelIdYoutube);
-        if (latestVideoId && !postedVideoIds.includes(latestVideoId)) {
-          const targetChannel =
-            typeof targetChannelId === "string"
-              ? await client.channels.fetch(targetChannelId).catch((error) => {
-                  console.error("Error fetching channel:", error.message);
-                  return null;
-                })
-              : targetChannelId;
-
-          if (targetChannel) {
-            console.log(
-              `Sending notification to channel ${targetChannel.name}`
-            );
-            targetChannel.send(
-              `New video for ${channelIdYoutube}: https://www.youtube.com/watch?v=${latestVideoId}`
-            );
-
-            // Add the posted video ID to the database
-            await savePostedVideoId(latestVideoId);
-          } else {
-            console.error(
-              "Channel not found. Make sure the provided channel ID is correct."
-            );
-          }
+        for (const video of await getRecentVideos(channelIdYoutube)) {
+          if (posted.has(video.id)) continue;
+          await target.send(
+            `New video from ${video.channelTitle}: https://www.youtube.com/watch?v=${video.id}`
+          );
+          // Saved only after a successful send, so failed posts retry next run.
+          await pool.query("INSERT INTO posted_videos (video_id) VALUES (?)", [
+            video.id,
+          ]);
+          posted.add(video.id);
         }
       } catch (error) {
         console.error(`Error checking ${channelIdYoutube}:`, error.message);
       }
     }
   } catch (error) {
-    console.error("Error in checkYouTubeChannels:", error.message);
-    throw error;
+    console.error("YouTube check failed:", error.message);
   }
 }
 
-module.exports = {
-  getLatestVideoId,
-  checkYouTubeChannels,
-};
+module.exports = { checkYouTubeChannels };

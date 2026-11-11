@@ -1,10 +1,12 @@
 // app.js
-const { Client, GatewayIntentBits, Partials } = require("discord.js");
+const { Client, Events, GatewayIntentBits, Partials } = require("discord.js");
 const { setupRoles } = require("./components/roles");
 const { getRandomActivity } = require("./components/activityOptions");
 const { checkYouTubeChannels } = require("./components/tube");
 
-// Create a new instance of the Discord client
+const YOUTUBE_TARGET_CHANNEL_ID = "482315570201755664";
+const HOUR = 60 * 60 * 1000;
+
 const client = new Client({
   partials: [Partials.Message, Partials.Reaction],
   intents: [
@@ -15,55 +17,38 @@ const client = new Client({
   ],
 });
 
-// Event handling for errors and warnings
-client.on("error", (error) => {
-  console.error("Bot error:", error);
-});
+client.on(Events.Error, (error) => console.error("Bot error:", error));
+client.on(Events.Warn, (warning) => console.warn("Bot warning:", warning));
 
-client.on("warn", (warning) => {
-  console.warn("Bot warning:", warning);
-});
+const roles = setupRoles(client);
 
-// Function to set up roles
-setupRoles(client);
-
-// Event handling when the bot is ready
-client.on("ready", () => {
-  // Set a random activity when the bot starts
+function setRandomActivity() {
   const activity = getRandomActivity();
-  client.user.setPresence({
-    activities: [activity],
-    status: "online",
-  });
+  client.user.setPresence({ activities: [activity], status: "online" });
+  console.log(`Activity set to: ${activity.name}`);
+}
 
+client.once(Events.ClientReady, () => {
   console.log(`Bot is ready as ${client.user.tag}`);
-  console.log(`Setting initial activity`);
 
-  // Update activity every 6 hours
-  setInterval(() => {
-    const newActivity = getRandomActivity();
-    client.user.setPresence({ activities: [newActivity], status: "online" });
-    console.log(`Updated activity to: ${newActivity.name}`);
-  }, 6 * 60 * 60 * 1000);
+  setRandomActivity();
+  setInterval(setRandomActivity, 6 * HOUR);
 
-  //tube
-  // Specify the target channel ID
-  const targetChannelId = "482315570201755664";
-
-  // Schedule the checkYouTubeChannels function to run every 24 hours
-  const oneDayInMilliseconds = 24 * 60 * 60 * 1000;
-
-  // Initial run
-  setTimeout(() => {
-    checkYouTubeChannels(client, targetChannelId);
-
-    // Schedule the next run every 24 hours
-    setInterval(() => {
-      checkYouTubeChannels(client, targetChannelId);
-    }, oneDayInMilliseconds);
-  }, oneDayInMilliseconds - (Date.now() % oneDayInMilliseconds));
-  //tube
+  // Runs on startup too; already-posted videos are skipped via the DB.
+  checkYouTubeChannels(client, YOUTUBE_TARGET_CHANNEL_ID);
+  setInterval(
+    () => checkYouTubeChannels(client, YOUTUBE_TARGET_CHANNEL_ID),
+    24 * HOUR
+  );
 });
 
-// Log in to Discord using the provided token
+// Custom signal handlers replace Node's default exit, and the intervals
+// above keep the event loop alive, so exit explicitly.
+function shutdown() {
+  roles.teardown();
+  client.destroy().finally(() => process.exit(0));
+}
+process.on("SIGINT", shutdown);
+process.on("SIGTERM", shutdown);
+
 client.login(process.env.DISCORD_TOKEN);

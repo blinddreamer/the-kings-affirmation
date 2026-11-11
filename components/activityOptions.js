@@ -28,7 +28,4 @@ function getRandomActivity() {
   return activityOptions[randomIndex];
 }
 
-module.exports = {
-  activityOptions,
-  getRandomActivity,
-};
+module.exports = { getRandomActivity };

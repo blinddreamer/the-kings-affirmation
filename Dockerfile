@@ -1,8 +1,9 @@
-FROM node:current-alpine
+FROM node:22-alpine
 
 WORKDIR /app
-COPY package*.json ./
-RUN npm install
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile --production && yarn cache clean
 COPY . .
 
+USER node
 CMD ["node", "app.js"]
